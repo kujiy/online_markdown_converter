@@ -17,6 +17,11 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <script type="text/javascript" src="http://momentjs.com/downloads/moment.min.js"></script>
 
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie
+/2.1.1/js.cookie.min.js"></script>
+
+
+
     <style type="text/css">
     .btn {
         margin-bottom: 5px;
@@ -43,7 +48,6 @@
         background-image: url(http://livedoor.blogimg.jp/qoozy/imgs/b/5/b5f1159c.png);
     }
     </style>
-
 </head>
 
 <body style="width: 80%; margin: auto;">
@@ -86,16 +90,28 @@
                         <button class="btn btn-default" onclick="convert_markdown()">Markdown format</button>
                         <button class="btn btn-default" onclick="quoted_markdown()">Markdown with quoting</button>
                         <button class="btn btn-default" onclick="strikethrough_markdown()">Markdown with strike through</button>
-                        <div class="radio">
-                            <label>
-                                <input type="radio" name="optionsRadios" id="italic" checked> <i>Italicize</i> one-byte strings.
-                            </label>
-                        </div>
-                        <div class="radio">
-                            <label>
-                                <input type="radio" name="optionsRadios" id="bold"> <b>Embolden</b> one-byte strings.
-                            </label>
-                        </div>
+                        <form id="radio_form">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios" value="italic"> <i>Italicize</i> one-byte strings.
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios" value="bold"> <b>Embolden</b> one-byte strings.
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios" value="space"> Add spaces before and right after one-byte strings.
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios" value="no" checked> No option.
+                                </label>
+                            </div>
+                        </form>
                     </p>
                 </div>
                 <div class="panel-heading">Quoting </div>
@@ -531,14 +547,19 @@
         var str = getText('#src');
 
         // 半角に斜体/強調をする
+        var mode = $('input[name=optionsRadios]:checked', "#radio_form").val();
+
         // 斜体モードチェック
-        if ($('input#italic').is(':checked')) {
+        if (mode == "italic") {
             str = makeupOnebyteStrings(str, "*");
-        }
-        // 太字モードチェック
-        if ($('input#bold').is(':checked')) {
+        } else if (mode == "bold") {
+            // 太字モードチェック
             str = makeupOnebyteStrings(str, "**");
+        } else if (mode == "space") {
+            str = makeupOnebyteStrings(str, " ");
         }
+
+            Cookies.set('md_option', mode); //書き込み{保存days}
 
         return str;
     }
@@ -1086,32 +1107,22 @@
     </script>
     <!-- ロード時に実行される関数、グローバル共用関数 -->
     <script language="javascript">
-    // ページ表示時にウィンドウ幅によってレイアウトを自動修正（body onloadが利かなかった、関数実行をちょい遅らせる。)
-    window.setTimeout(function() {
-        reLayoutColumn();
-    }, 50); // 秒数
 
-    <!-- ウィンドウ横幅が狭かったら縦に並べて表示 -->
-    function reLayoutColumn() {
-        if (getBrowserWidth() < 1060) {
-            document.getElementById('container').style.width = '530px';
-        } else {
-            document.getElementById('container').style.width = '1060px';
-        }
-    }
 
-    // getBrowserWidth() by Cameron Adams
-    // http://www.themaninblue.com/experiment/ResolutionLayout/
-    function getBrowserWidth() {
-        if (window.innerWidth) {
-            return window.innerWidth;
-        } else if (document.documentElement && document.documentElement.clientWidth != 0) {
-            return document.documentElement.clientWidth;
-        } else if (document.body) {
-            return document.body.clientWidth;
-        }
-        return 0;
-    }
+
+
+
+
+
+    (function() {
+            // Revert option
+            var mode = Cookies.get('md_option');
+            $('input[value=' + mode + ']').prop('checked', true);
+    })();
+
+
+
+
 
 
 
@@ -1128,7 +1139,7 @@
                     convert関数の中のreturn funcion()クロージャまで呼び出せないので
                     一度変数fromKeyConvertに格納し、変数から呼び出すことでクロージャ内をreturnさせる。
                     参考　http://karafuto50.blog117.fc2.com/?mode=m&no=136　*/
-                var fromKeyConvert = syntaxDisplay('js');
+                var fromKeyConvert = quoted_markdown();
                 fromKeyConvert();
                 return false;
             }
@@ -1146,14 +1157,10 @@
     function enableTimer() {
         if (bEnableTimer == true) {
             bEnableTimer = false;
-            $.cookie('Timer', 'off', {
-                expires: 99
-            }); //書き込み{保存days}
+            Cookies.set('Timer', 'off');
         } else {
             bEnableTimer = true;
-            $.cookie('Timer', 'on', {
-                expires: 99
-            }); //書き込み{保存days}
+            Cookies.set('Timer', 'on');
         }
         $('#enableTimerButton').toggleClass("switchoff").toggleClass("switchon");
     }
@@ -1205,7 +1212,6 @@
         $(area).focus(); //結果テキストエリアをフォーカスする
         $(area).select(); //結果テキストエリアを全選択する
     }
-
     </script>
     <!-- 共用関数ここまで -->
     <!-- google analytics -->
@@ -1224,56 +1230,8 @@
     })();
     </script>
     <!-- google analytics -->
-    <!-- jquery.cookie.jsをコピペ（google ajax apiにない、自前で用意したくない。） ここから -->
-    <script type="text/javascript">
-    /**
-     * " jquery.cookie.js"
-     *
-     * jQuery Cookie plugin
-     *
-     * Copyright (c) 2010 Klaus Hartl (stilbuero.de)
-     * Dual licensed under the MIT and GPL licenses:
-     * http://www.opensource.org/licenses/mit-license.php
-     * http://www.gnu.org/licenses/gpl.html
-     *
-     */
-    jQuery.cookie = function(key, value, options) {
 
-        // key and at least value given, set cookie...
-        if (arguments.length > 1 && String(value) !== "[object Object]") {
-            options = jQuery.extend({}, options);
 
-            if (value === null || value === undefined) {
-                options.expires = -1;
-            }
-
-            if (typeof options.expires === 'number') {
-                var days = options.expires,
-                    t = options.expires = new Date();
-                t.setDate(t.getDate() + days);
-            }
-
-            value = String(value);
-
-            return (document.cookie = [
-                encodeURIComponent(key), '=',
-                options.raw ? value : encodeURIComponent(value),
-                options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
-                options.path ? '; path=' + options.path : '',
-                options.domain ? '; domain=' + options.domain : '',
-                options.secure ? '; secure' : ''
-            ].join(''));
-        }
-
-        // key and possibly options given, get cookie...
-        options = value || {};
-        var result, decode = options.raw ? function(s) {
-            return s;
-        } : decodeURIComponent;
-        return (result = new RegExp('(?:^|; )' + encodeURIComponent(key) + '=([^;]*)').exec(document.cookie)) ? decode(result[1]) : null;
-    };
-    </script>
-    <!-- jquery.cookie.js -->
 </body>
 
 </html>

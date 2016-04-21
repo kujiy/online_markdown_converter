@@ -1,0 +1,1279 @@
+<!--
+* @author kujiy
+-->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Online Text to Markdown Converter</title>
+    <meta charset="UTF-8"></meta>
+    <script src="https://code.jquery.com/jquery-2.2.3.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="http://momentjs.com/downloads/moment.min.js"></script>
+
+    <style type="text/css">
+    .btn {
+        margin-bottom: 5px;
+    }
+
+    .timerswitch {
+        padding: 2px 0 2px 10px;
+        width: 200px;
+        height: 24px;
+        font-size: 70%;
+    }
+
+    #enableTimerButton {
+        width: 57px;
+        height: 20px;
+        margin: -3px 0 0 7px;
+    }
+
+    .switchon {
+        background-image: url(http://livedoor.blogimg.jp/qoozy/imgs/0/8/0849afe7.png);
+    }
+
+    .switchoff {
+        background-image: url(http://livedoor.blogimg.jp/qoozy/imgs/b/5/b5f1159c.png);
+    }
+    </style>
+
+</head>
+
+<body style="width: 80%; margin: auto;">
+    <h2>Online Text to Markdown Converter</h2>
+    <a href="https://github.com/kujiy/online_markdown_converter">Github</a>
+    <div class="timerswitch pull-right">
+        <p class="pull-left"> Auto reset textarea</p>
+        <div id="enableTimerButton" class="switchon pull-left" onclick="enableTimer()"></div>
+    </div>
+    <div class="clearfix"></div>
+    <hr>
+    <div class="form-horizontal" role="form">
+        <!-- textarea -->
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-6">
+                    <label class="col-sm-6 control-label">Before</label>
+                </div>
+                <div class="col-sm-6">
+                    <label class="col-sm-6 control-label">After</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <textarea id="src" name="src" class="form-control" rows="10" placeholder="Paste your text here."></textarea>
+                </div>
+                <div class="col-sm-6">
+                    <textarea id="dst" name="dst" class="form-control" rows="10" placeholder="Converted text will be in here."></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="box1 col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">Convert to...</div>
+                <div class="panel-body">
+                    <p>
+                        <button class="btn btn-default" onclick="convert_markdown()">Markdown format</button>
+                        <button class="btn btn-default" onclick="quoted_markdown()">Markdown with quoting</button>
+                        <button class="btn btn-default" onclick="strikethrough_markdown()">Markdown with strike through</button>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optionsRadios" id="italic" checked> <i>Italicize</i> one-byte strings.
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optionsRadios" id="bold"> <b>Embolden</b> one-byte strings.
+                            </label>
+                        </div>
+                    </p>
+                </div>
+                <div class="panel-heading">Quoting </div>
+                <div class="panel-body">
+                    <p>
+                        <button class="btn btn-default" onclick="syntaxDisplay('js')">javascript</button>
+                        <button class="btn btn-default" onclick="syntaxDisplay('php')">PHP</button>
+                        <button class="btn btn-default" onclick="syntaxDisplay('xml')">HTML/XML</button>
+                        <button class="btn btn-default" onclick="syntaxDisplay('css')">CSS</button>
+                        <br />
+                        <button class="btn btn-default" onclick="syntaxDisplay('sh')">sh</button>
+                        <button class="btn btn-default" onclick="syntaxDisplay('bash')">bash</button>
+                        <button class="btn btn-default" onclick="syntaxDisplay('java')">Java</button>
+                        <button class="btn btn-default" onclick="syntaxDisplay('python')">python</button>
+                        <button class="btn btn-default" onclick="syntaxDisplay('ruby')">ruby</button>
+                        <button class="btn btn-default" onclick="syntaxDisplay('perl')">Perl</button>
+                        <button class="btn btn-default" onclick="syntaxDisplay('vb')">VB</button>
+                        <button class="btn btn-default" onclick="syntaxDisplay('sql')">SQL</button>
+                        <button class="btn btn-default" onclick="syntaxDisplay('c')">C</button>
+                        <button class="btn btn-default" onclick="syntaxDisplay('csharp')">C#</button>
+                        <button class="btn btn-default" onclick="syntaxDisplay('objc')">Objective-C</button>
+                        <br>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="htmlescapecheck"> Escape symbols in your text</label>
+                        </div>
+                    </p>
+                </div>
+                <div class="panel-heading">Emergency </div>
+                <div class="panel-body">
+                    <p>
+                        <!-- エスケープされた文字列を元に戻す -->
+                        <button class="btn btn-sm btn-warning" onclick="deconvert('html')">Revert strings which was HTML escaped</button>
+                        <button class="btn btn-sm btn-warning" onclick="deconvert('backslash')">Revert strings which was escaped with back-slash</button>
+                        <!-- 動作チェック用に使うサンプルHTMLタグ　↓ -->
+                        <button class="btn btn-sm btn-primary" onclick="insertSampleCode()">Insert sample html tags(for debugging)</button>
+                        <!-- 動作チェック用に使うサンプルHTMLタグ ↑-->
+                        <!-- 動作チェック用に使うサンプル　↓ -->
+                        <button class="btn btn-sm btn-primary" onclick="insertSampleApacheLog()">Insert sample apache logs(for debugging)</button>
+                        <!-- 動作チェック用に使うサンプル ↑-->
+                    </p>
+                </div>
+            </div>
+            <!-- floatleft box -->
+        </div>
+        <!-- floatleft box -->
+        <!-- BOX2 -->
+        <div class="box2 col-md-6">
+            <!-- floatright box -->
+            <!-- BOX2 テキストエリア「元」 -->
+            <!-- BOX2 ボタン start -->
+            <div class="panel panel-default">
+                <div class="panel-heading">HTML</div>
+                <div class="panel-body">
+                    <p>
+                        <button class="btn btn-default" onclick="createALink()">Make &lt;A> link tag</button>
+                        <button class="btn btn-default" onclick="remove_htmltags()">Remove HTML tags</button>
+                    </p>
+                </div>
+                <div class="panel-heading">Converting logs </div>
+                <div class="panel-body">
+                    <p>
+                        <button class="btn btn-default" onclick="mysql2tab();">Split with tabs for mysql selected results</button>
+                        <button class="btn btn-default" onclick="apache_to_tsv()">Split with tabs for apache log</button>
+                    </p>
+                </div>
+                <div class="panel-heading">Escaping </div>
+                <div class="panel-body">
+                    <p>
+                        <button class="btn btn-default" onclick="escapeDisplay('html')">HTML tags&lt;&gt;&quot;&amp; </button>
+                        <button class="btn btn-default" onclick="escapeDisplay('&quot;', '/')">　&quot; and /　 </button>
+                        <button class="btn btn-default" onclick="escapeDisplay('&quot;')"> 　&quot;　 </button>
+                        <button class="btn btn-default" onclick="escapeDisplay('/')">　 /　 </button>
+                        <button class="btn btn-default" onclick="escapeDisplay('.')">　 .　 </button>
+                    </p>
+                </div>
+                <div class="panel-heading">Replacing</div>
+                <div class="panel-body">
+                    <p>
+                        <button class="btn btn-default" onclick="br2n()">&lt;BR> to \n</button>
+                        <button class="btn btn-default" onclick="n2br()">\n to &lt;BR></button>
+                        <button class="btn btn-default" onclick="br2nn()">Dubble Line breaks</button>
+                        <button class="btn btn-default" onclick="brbr2n()">Halve Line breaks</button>
+                    </p>
+                </div>
+                <div class="panel-heading">Customize</div>
+                <div class="panel-body">
+                    <p>
+                        <button class="btn btn-default" onclick="setformlist()">setformlist</button>
+                        <button class="btn btn-default" onclick="replaceorignaltag()">BB code</button>
+                        <button class="btn btn-default" onclick="makeTagFree('[b][color=CC0000]', '[/color][/b]')">[b][color=CC0000]</button>
+                    </p>
+                </div>
+                <div class="panel-heading">excel</div>
+                <div class="panel-body">
+                    <p>
+                        Calculate Excel column numbers and alphabets (Interconversion)
+                        <br> e.g. <i>Z -> 26 -> Z</i>
+                        <form method="post" action="javascript:coltonum()" id="excelform">
+                            <input type="text" name="num" value="AAA" placeholder="Input alphabet or number here" id="excelbefore"></input>
+                            <input type="text" name="res" placeholder="Results" id="excelafter"></input>
+                            <input type="submit" value="Calculate"></input>
+                        </form>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- BOX 2 のボタン終わり -->
+        <!-- BOX2下側 ボタン end-->
+        <!-- BOX2 テキストエリア「後」 -->
+    </div>
+    <!-- floatright box -->
+    </div>
+    <!-- BOX1 スクリプト開始 -->
+    <script language="javascript">
+    /* SyntaxHighlighter用にコンバートするsyntaxDisplay関数の定義 */
+    /* 引数１は言語名：<pre class="brush : 言語"> に使われる*/
+    function syntaxDisplay(lang) {
+        /* テキストエリアから文字列取得＆文頭・文末の改行を削除        */
+        var str = getText('#src');
+
+        /* 出力用の変数res。*/
+        var res = '';
+
+        /* 引用マークを入れて次に引数でもらった言語名を入れる              */
+        res += '```' + lang + "\n";
+
+        /* エスケープするかどうかのチェックbHtmlEscape変数をそのまま代入
+            true=エスケープする false=エスケープしない */
+        var bHtmlEscape = document.getElementById("htmlescapecheck").checked; //default=true
+        if (bHtmlEscape) {
+            // エスケープする
+            res += htmlTagEscape(str);
+        } else {
+            // エスケープしないでそのまま代入
+            res += str;
+        }
+
+        /* resに</pre>タグを追加して、res完成。*/
+        /* エスケープのみ(引数なし)の場合は処理なし */
+        res += '\n```\n'
+
+        // textareaへ結果を表示する          */
+        updateResult(res, '#dst');
+
+        // 次の入力に備え、数秒後にテキストエリアをクリア
+        resetTextArea();
+    };
+
+    // HTMLタグをエスケープする関数
+    // 引数は 元の文字列
+    function htmlTagEscape(str) {
+
+        // 処理後に完成する文字列（返り値）
+        var escapedStr = '';
+
+        // エスケープ開始
+        for (var i = 0; i < str.length; ++i) {
+            /* 元の文字列を1文字ずつに分解してtmpに代入               */
+            var tmp = str.charAt(i);
+            /* switch文で置換           */
+            switch (tmp) {
+                /* & < > " を置換してresに追加する       */
+                case '&':
+                    escapedStr += '&amp;';
+                    break;
+                case '<':
+                    escapedStr += '&lt;';
+                    break;
+                case '>':
+                    escapedStr += '&gt;';
+                    break;
+                case '"':
+                    escapedStr += '&quot;';
+                    break;
+                    /* その他はそのままresへ追加           */
+                default:
+                    escapedStr += tmp;
+                    break;
+            }
+        }
+        return escapedStr;
+    }
+
+
+
+    /* 特定文字のエスケープ処理をして表示するescapeDisplay関数の定義
+         引数１は記号指定：<>”&/ どの記号をエスケープするのか指定。可変個引数という超絶技を使用。
+        http://www.atmarkit.co.jp/fdotnet/ajaxjs/ajaxjs02/ajaxjs02_04.html        　*/
+    function escapeDisplay(symbol) {
+        /* テキストエリアから文字列取得＆文頭・文末の改行を削除        */
+        var str = getText('#src');
+
+        /* 出力用の変数res。  */
+        var res = '';
+
+        /* エスケープ変換   */
+        // htmlの場合
+        if (symbol == 'html') {
+            res += htmlTagEscape(str)
+        } else { // バックスラッシュの場合
+            /* 引数を配列にしてそのまま渡す
+             arguments関数には渡された引数すべて(symbolが複数)が格納されている        */
+            res += backSlashEscape(str, arguments);
+        }
+
+        // textareaへ結果を表示する          */
+        updateResult(res, '#dst');
+
+        // 次の入力に備え、数秒後にテキストエリアをクリア
+        resetTextArea();
+    };
+
+
+    // 文字列をバックスラッシュ・エスケープする関数
+    // 引数は 元の文字列、変更する記号が複数含まれた配列【要注意】
+    function backSlashEscape(str, symbolArray) {
+
+        // 処理後に完成する文字列（返り値）
+        var escapedStr = '';
+
+        // エスケープ開始
+        // １文字ループ開始。ネストされたループを抜けるためループに名前を付ける
+        loop1:
+            for (var i = 0; i < str.length; ++i) { // １文字ごとにループしていく
+
+                /* 元の文字列を1文字ずつに分解してtmpに代入               */
+                var tmp = str.charAt(i);
+
+                /* symbolArray配列には変換する記号すべてが格納されている
+                    その中にある記号を置換していく */
+
+                /* 引数の記号判定ループ開始。  */
+                loop2:
+                    for (var j = 0; j < symbolArray.length; ++j) {
+
+                        if ((symbolArray[j] == "\"") && (tmp == "\"")) { //記号指定に " があったら置換
+                            escapedStr += '\\"';
+                            continue loop1; // 上位階層の１文字ループにスキップ
+                        } else if ((symbolArray[j] == "/") && (tmp == "/")) { //記号指定に / があったら置換
+                            escapedStr += '\\/';
+                            continue loop1;
+                        } else if ((symbolArray[j] == ".") && (tmp == ".")) { //記号指定に . があったら置換
+                            escapedStr += '\\.';
+                            continue loop1;
+                        } else {
+                            //まだ引数の記号判別が残っているなら追加せずに次の判別へ
+                            if (j != symbolArray.length - 1) {
+                                continue loop2;
+                            } else {
+                                //このループ(引数の記号判別)最後なら
+                                // tmpをそのままescapedStrへ追加
+                                escapedStr += tmp;
+                                continue loop1;
+                            }
+                        }
+                    }
+            }
+        return escapedStr;
+    }
+
+    /* エスケープされた文字列を元に戻すdeconvert関数 */
+    function deconvert(type) {
+        /* 結果テキストエリアから文字列取得＆文頭・文末の改行を削除        */
+        var str = getText('#dst');
+
+        /* convert関数でついたpreタグを削除 */
+        if (str.match(/^<pre class="brush/)) {
+            str = str.replace(/^<pre.+?>/, '');
+            str = str.replace(/<\/pre>/, '');
+        }
+
+        /* デ・エスケープ開始  */
+        if (type == 'html') { // HTMLタグを置換
+            str = str.replace(/&lt;/g, '<');
+            str = str.replace(/&gt;/g, '>');
+            str = str.replace(/&quot;/g, '"');
+            str = str.replace(/&#39;/g, '"');
+            str = str.replace(/&amp;/g, '&');
+        } else if (type == 'backslash') { // バックスラッシュを置換
+            str = str.replace(/\\\"/g, '"'); // "ダブルクオーテーション
+            str = str.replace(/\\\//g, '/'); // スラッシュ
+            str = str.replace(/\\\./g, '/'); // ピリオド
+        }
+        /* 変換終了         */
+        /* 元の方のtextareaへ結果を表示する          */
+        updateResult(str, "#src");
+
+        // 次の入力に備え、15秒後にテキストエリアをクリア
+        resetTextArea('15');
+
+    };
+
+    // 動作チェック用のサンプルHTMLタグを変換元テキストエリアへ挿入
+    function insertSampleCode() {
+        var text = "<div class=\"box\">タグ&タグ</div>";
+        $('#src').val(text);
+
+        // クリアタイマーをリセット
+        window.clearTimeout(timer);
+    }
+
+
+    // 動作チェック用のサンプルpacheLogを変換元テキストエリアへ挿入
+    function insertSampleApacheLog() {
+        var text = "\n153.179.28.193 - - [12/Oct/2015:09:30:10 +0900] \"GET /samp.php?callback=11 HTTP/1.1\" 200 34349 \"https://example.com/test?sh=1#/\" \"Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; Touch; MAFSJS; rv:11.0) like Gecko\"\n172.22.123.153 - - [12/Oct/2015:09:30:16 +0900] \"GET /serv/authCheck/?a=7 HTTP/1.1\" 200 37 \"-\" \"Mozilla/5.0 (Windows; U; Windows NT 5.1; ja; rv:1.9.2.16) Gecko/20110319 Firefox/3.6.16 ( .NET CLR 3.5.30729)\"\n153.179.28.193 - - [12/Oct/2015:09:30:16 +0900] \"GET /samp.php?callback=2 HTTP/1.1\" 200 34346 \"https://example.com/test?sh=1#/\" \"Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; Touch; MAFSJS; rv:11.0) like Gecko\"\n172.22.123.153 - - [12/Oct/2015:09:30:30 +0900] \"GET /serv/authCheck/?a=7 HTTP/1.1\" 200 37 \"-\" \"Mozilla/5.0 (Windows; U; Windows NT 5.1; ja; rv:1.9.2.16) Gecko/20110319 Firefox/3.6.16 ( .NET CLR 3.5.30729)\"\n153.179.28.193 - - [12/Oct/2015:09:30:30 +0900] \"GET /samp.php?callback=13 HTTP/1.1\" 200 34349 \"https://example.com/test?sh=1#/\" \"Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; Touch; MAFSJS; rv:11.0) like Gecko\"\n121.95.51.111 - - [12/Oct/2015:09:30:32 +0900] \"POST /serv/guest/ HTTP/1.1\" 200 207 \"https://mapmark.fmworld.net/serv/login/\" \"Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko\"\n121.95.51.111 - - [12/Oct/2015:09:30:32 +0900] \"POST /serv/start/guest/ HTTP/1.1\" 200 1133 \"https://mapmark.fmworld.net/serv/login/\" \"Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko\"\n121.95.51.111 - - [12/Oct/2015:09:30:32 +0900] \"POST / HTTP/1.1\" 302 - \"https://mapmark.fmworld.net/serv/start/guest/\" \"Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko\"\n180.198.159.4 - - [25/Feb/2016:09:46:10 +0900] \"GET /api/tabi_spot_list.php?callback=jQuery203017152280536233116_1456360954757&centerlat=34.94692906815382&centerlng=137.14934462518695&centerrange=50000&zoom=14&lang=ja&page_size=20&page=1&sort=5&cidstr=1%2C2%2C6%2C4%2C7%2C5%2C8&female=0&spotkbn=2&area=&keyword=&tile_scroll_page=0&tile_scroll_id=0&_=1456360954782 HTTP/1.1\" 200 47788 \"https://mapmark.fmworld.net/?search=1&filter_spotkbn=rrb&filter_keyword=\" \"Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; Touch; rv:11.0) like Gecko\"\n153.159.139.180 - mapmark [25/Feb/2016:09:46:02 +0900] \"GET /api/tabi_spot_list.php?apikey=9e9837dd1e1dee136eb44ab9a43c1a65&tkn=34fc946de9af80128704b9990058c00653e5b92effe87eceb1c38fa30719b656&centerlat=34.89222738404376&centerlng=134.081810452044&centerrange=508&keyword=%E9%A3%9F%E5%A0%82&spotkbn=2&sort=5&female=0&zoom=16.072794 HTTP/1.1\" 200 45997 \"-\" \"Dalvik/1.6.0 (Linux; U; Android 4.4.2; M01 Build/V01R15L)\"\n153.159.139.180 - mapmark [25/Feb/2016:09:46:03 +0900] \"GET /api/tabi_spot_list.php?apikey=9e9837dd1e1dee136eb44ab9a43c1a65&tkn=34fc946de9af80128704b9990058c00653e5b92effe87eceb1c38fa30719b656&centerlat=34.89369286390309&centerlng=134.08656165003777&centerrange=508&keyword=%E9%A3%9F%E5%A0%82&spotkbn=2&sort=5&female=0&zoom=16.072794 HTTP/1.1\" 200 46232 \"-\" \"Dalvik/1.6.0 (Linux; U; Android 4.4.2; M01 Build/V01R15L)\"\n180.198.159.4 - - [25/Feb/2016:09:46:10 +0900] \"GET /api/tabi_spot_list.php?callback=jQuery203017152280536233116_1456360954757&centerlat=34.94692906815382&centerlng=137.14934462518695&centerrange=50000&zoom=14&lang=ja&page_size=20&page=1&sort=5&cidstr=1%2C2%2C6%2C4%2C7%2C5%2C8&female=0&spotkbn=2&area=&keyword=&tile_scroll_page=0&tile_scroll_id=0&_=1456360954782 HTTP/1.1\" 200 47788 \"https://mapmark.fmworld.net/?search=1&filter_spotkbn=rrb&filter_keyword=\" \"Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; Touch; rv:11.0) like Gecko\"\n153.159.139.180 - mapmark [25/Feb/2016:09:46:05 +0900] \"GET /api/tabi_spot_list.php?apikey=9e9837dd1e1dee136eb44ab9a43c1a65&tkn=34fc946de9af80128704b9990058c00653e5b92effe87eceb1c38fa30719b656&centerlat=34.892590387683136&centerlng=134.08780317753553&centerrange=508&keyword=%E9%A3%9F%E5%A0%82&spotkbn=2&sort=5&female=0&zoom=16.072794 HTTP/1.1\" 200 46233 \"-\" \"Dalvik/1.6.0 (Linux; U; Android 4.4.2; M01 Build/V01R15L)\"";
+        $('#src').val(text);
+        $('#src').val(text);
+
+        // クリアタイマーをリセット
+        window.clearTimeout(timer);
+    }
+
+
+    //]]>
+
+
+
+
+
+
+    function mysql2tab() {
+        /* テキストエリアから文字列取得＆文頭・文末の改行を削除        */
+        var str = getText('#src');
+
+        /* 出力用の変数res。*/
+        var res = '';
+
+        // タイトルの罫線を取り除く
+        res = str.replace(/\s*?\+[\+|-]+\+\s*$/gm, "");
+
+        // 罫線をタブにする（データの中に罫線あったらそれも置換されちゃう）
+        res = res.replace(/\|/g, "\t");
+        //タブの後の半角空白を削除
+        res = res.replace(/\t +/gm, "\t");
+        //タブ前の半角空白を削除
+        res = res.replace(/ +\t/gm, "\t");
+        //改行前の半角空白を削除
+        res = res.replace(/[ +|\t+]([\n|\r])/g, "$1");
+
+        // textareaへ結果を表示する          */
+        updateResult(res, '#dst');
+
+        // 次の入力に備え、数秒後にテキストエリアをクリア
+        resetTextArea();
+    };
+
+
+
+
+    function c2a0remover() {
+        /* テキストエリアから文字列取得＆文頭・文末の改行を削除        */
+        var str = getText('#src');
+
+        /* 出力用の変数res。*/
+        var res = '';
+
+        // c2a0スペースを取り除く
+        // res = str.replace(/\160/,"").replace(/\xA0/,"").replace(/\s+/," ");
+        //  res = str.replace(/&amp;nbsp;/g,"");
+        //      res = str.replace(/&nbsp;/g, ' ');
+
+        //  var re = new RegExp(String.fromCharCode(160), "g");
+        // res = str.replace(re, " ");
+
+        //          res = str.replace(String.fromCharCode(160), " ");
+        res = str.replace(new RegExp(NBSP, "g"), SP);
+
+
+
+        // textareaへ結果を表示する          */
+        updateResult(res, '#dst');
+
+        // 次の入力に備え、数秒後にテキストエリアをクリア
+        resetTextArea();
+    };
+
+
+
+    function apache_to_tsv() {
+
+        /* テキストエリアから文字列取得＆文頭・文末の改行を削除        */
+        var str = getText('#src');
+
+        /* 出力用の変数res。*/
+        var res = '';
+
+        //apache log形式の時刻をわかりやすい形式にする
+        //1行ずつ操作
+        $.each(str.split('\n'), function(i, e) {
+            // console.log(e);
+            apache_datetime = e.match(/\d{2}\/\w{3}\/20\d{2}:\d{2}:\d{2}:\d{2}/gi);
+            // console.log(apache_datetime);
+
+            yyyymmdd = moment(apache_datetime, 'DD/MMM/YYYY:HH:mm:ss Z').format("YYYY-MM-DD")
+            hhmmss = moment(apache_datetime, 'DD/MMM/YYYY:HH:mm:ss Z').format("HH:mm:ss")
+
+            out = e.replace(/\s\d{2}\/\w{3}\/20\d{2}:\d{2}:\d{2}:\d{2}/gi, "\t" + yyyymmdd + "\t" + hhmmss);
+            // console.log(out);
+            //行番号を付与
+            res += i + "\t" + out + "\n";
+        });
+
+
+        //まとめて時刻等をタブ区切りにする
+        res = res.replace(/ - - \[/gm, "\t");
+        res = res.replace(/ - \w* \[/gm, "\t");
+        res = res.replace(/\s\+0900]\s/gm, "\t");
+        res = res.replace(/GET\s/gm, "GET\t");
+        res = res.replace(/POST\s/gm, "POST\t");
+        res = res.replace(/"/g, "");
+        res = res.replace(/(\d{4}):/gm, "$1\t");
+        // http_status, port
+        res = res.replace(/HTTP\/1.1\s(\d+)\s(\d+)?\s?-?/gm, "\t$1\t$2\t");
+        // User-agent
+        res = res.replace(/\sMozilla/gm, "\tMozilla");
+
+        //１行目にタイトル行を追加
+        res = "no\tip\tdate\ttime\ttype\tlog\thttp_status\tport?\ttarget?\tuser-agent\n" + res;
+
+
+        // textareaへ結果を表示する          */
+        updateResult(res, '#dst');
+
+        // 次の入力に備え、数秒後にテキストエリアをクリア
+        resetTextArea();
+
+    }
+
+    function getStrForMarkdown() {
+
+        /* テキストエリアから文字列取得＆文頭・文末の改行を削除        */
+        var str = getText('#src');
+
+        // 半角に斜体/強調をする
+        // 斜体モードチェック
+        if ($('input#italic').is(':checked')) {
+            str = makeupOnebyteStrings(str, "*");
+        }
+        // 太字モードチェック
+        if ($('input#bold').is(':checked')) {
+            str = makeupOnebyteStrings(str, "**");
+        }
+
+        return str;
+    }
+
+    function convert_markdown() {
+
+        /* テキストエリアから文字列取得＆きれいに  */
+        var str = getStrForMarkdown();
+
+        /* 出力用の変数res。*/
+        var res = '';
+
+        // 記号付きの行を見出しにする
+        //1行ずつ操作
+        $.each(str.split('\n'), function(i, e) {
+            // console.log(i);
+            // console.log(e);
+
+            e = format_to_markdown(e)
+
+            res += e + "  \n";
+
+        });
+
+        // textareaへ結果を表示する          */
+        updateResult(res, '#dst');
+
+        // 次の入力に備え、数秒後にテキストエリアをクリア
+        resetTextArea();
+
+    }
+
+    function format_to_markdown(e) {
+
+        e = e.replace(/^\s*[□◇◆■▲△▼○◯◎●]/gi, "# ");
+
+        e = e.replace(/^\s*・/gi, " - ");
+
+
+        e = e.replace(/^\s*①|❶|１．/gi, "1. ");
+        e = e.replace(/^\s*②|❷|２．/gi, "2. ");
+        e = e.replace(/^\s*③|❸|３．/gi, "3. ");
+        e = e.replace(/^\s*④|❹|４．/gi, "4. ");
+        e = e.replace(/^\s*⑤|❺|５．/gi, "5. ");
+        e = e.replace(/^\s*⑥|❻|６．/gi, "6. ");
+        e = e.replace(/^\s*⑦|７．/gi, "7. ");
+        e = e.replace(/^\s*⑧|８．/gi, "8. ");
+        e = e.replace(/^\s*⑨|９．/gi, "9. ");
+        e = e.replace(/^\s*⑩|１０．/gi, "10. ");
+        e = e.replace(/^\s*⑪|１１．/gi, "11. ");
+
+        e = e.replace(/^[　\s]+?・/gi, "- ");
+
+        return e;
+    }
+
+    function quoted_markdown() {
+        console.log("quoted_markdown");
+
+        /* テキストエリアから文字列取得＆きれいに  */
+        var str = getStrForMarkdown();
+
+
+        /* 出力用の変数res。*/
+        var res = '';
+
+        // 記号付きの行を見出しにする
+        //1行ずつ操作
+        $.each(str.split('\n'), function(i, e) {
+            console.log(i);
+            console.log(e);
+
+            e = format_to_markdown(e)
+
+            res += "> " + e + "  \n";
+
+        });
+
+        // textareaへ結果を表示する          */
+        updateResult(res, '#dst');
+
+        // 次の入力に備え、数秒後にテキストエリアをクリア
+        resetTextArea();
+
+    }
+
+
+    function strikethrough_markdown() {
+        console.log("strikethrough_markdown");
+
+        /* テキストエリアから文字列取得＆きれいに  */
+        var str = getStrForMarkdown();
+
+
+        /* 出力用の変数res。*/
+        var res = '';
+
+        // 記号付きの行を見出しにする
+        //1行ずつ操作
+        $.each(str.split('\n'), function(i, e) {
+            console.log(i);
+            console.log(e);
+
+            e = format_to_markdown(e);
+            // "- 箇条書き" の先頭文字を取り消す
+            e = e.replace(/^(\s*)(-\s)(\S)/, "$1$2~~$3");
+            // "1. 数字の箇条書き" の先頭文字を取り消す
+            e = e.replace(/^(\s*)(\d\.\s)(\S)/, "$1$2~~$3");
+            // 箇条書き以外の先頭文字を取り消す
+            e = e.replace(/^([^(~\s)(\d.)(-\s)])/, "~~$1");
+
+            // おしりの文字を取り消す
+            e = e.replace(/(\S)$/, "$1~~");
+            // e = e.replace(/\s+?~~\s+$/, "  ");
+
+            res += e + "  \n";
+
+        });
+
+        // textareaへ結果を表示する          */
+        updateResult(res, '#dst');
+
+        // 次の入力に備え、数秒後にテキストエリアをクリア
+        resetTextArea();
+
+    }
+    </script>
+    <!-- BOX1 スクリプト -->
+    <!-- BOX 2 のスクリプト start -->
+    <script type="text/javascript">
+    // タグで囲む関数
+    function makeTag(tag, cls) {
+
+        /* テキストエリアから文字列取得＆文頭・文末の改行を削除        */
+        var str = getText('#src');
+
+        // blockquoteの場合
+        if (tag == "blockquote") {
+            if (cls == "blockquote") {
+                var res = '<blockquote>';
+                res += str;
+                res += '</blockquote>';
+            } else { // blockquoteWithTitleの場合
+                var res = '<h3 class="bluetitle">結果</h3>\n<blockquote>';
+                res += str;
+                res += '</blockquote>';
+            }
+
+            // divの場合
+        } else if (tag == "div") {
+            /* 出力用の変数res。divタグを作り 中に引数でもらったクラス名を入れる              */
+            var res = '<div class="' + cls + '">';
+            /* さらに元データを入れる              */
+            res += str;
+            /* </div>タグ閉じる            */
+            res += '\n<\/div>\n';
+
+            // その他の場合
+        } else {
+            var res = '<' + tag + ' class="' + cls + '">';
+            res += str;
+            res += '</' + tag + '>';
+        }
+
+        //* resを出力。textareaへ結果を表示する          */
+        updateResult(res, "#dst");
+
+        // 次の入力に備え、数秒後にテキストエリアをクリア
+        resetTextArea();
+
+    }
+
+
+
+
+    // 自由なタグで囲む関数。引数で開始タグと終了タグを指定
+    function makeTagFree(starttag, closetag) {
+
+        /* テキストエリアから文字列取得＆文頭・文末の改行を削除        */
+        var str = getText('#src');
+
+        var res = starttag;
+        res += str;
+        res += closetag;
+
+        //* resを出力。textareaへ結果を表示する          */
+        updateResult(res, "#dst");
+
+        // 次の入力に備え、数秒後にテキストエリアをクリア
+        resetTextArea();
+
+    }
+
+
+
+
+    // 半角英数字記号を斜体にする関数
+    function makeupOnebyteStrings(str, markup_symbol) {
+
+        console.log("italicizeOnebyteStrings");
+
+        markupstart = " " + markup_symbol;
+        markupend = markup_symbol + " ";
+
+        /* 入力内容の文字数をlenに代入 （forループ用)                */
+        var len = str.length;
+        /* 最終出力用の変数result。   */
+        var result = '';
+        /* マークアップ中かどうかのフラグ   */
+        var marking = false;
+
+        /* 変換作業スタート。                */
+        for (var i = 0; i < len; ++i) {
+            /* 元の文字列を1文字ずつに分解してtmpに、その前の文字をprevtmpに代入 */
+            var tmp = str.charAt(i); // 現在文字
+            var prevtmp = str.charAt(i - 1); // 前の文字
+
+            /* 次の文字をnexttmpに代入。
+                次の文字がスペースの場合はスペース以外の文字を拾う */
+            var nexttmp = str.charAt(i + 1); // 次の文字
+            for (var cnt = 2; cnt < len; ++cnt) {
+                if (nexttmp.match(/\s/)) {
+                    nexttmp = str.charAt(i + cnt);
+                }
+            }
+
+            /* 現在/前/次の文字を調べてresult変数に追加していく。*/
+
+            /* tmpが全角の場合 */
+            if (!tmp.match(/[0-9a-zA-Z_\s!-/:-@[-`{-~]+/)) {
+                /* tmpが全角 かつ prevtmpが半角の場合 */
+                if (prevtmp.match(/[0-9a-zA-Z_!-/:-@[-`{-~]+/)) {
+                    // tmpの前にマークアップエンドを出力
+                    result += markupend + tmp;
+                    marking = false;
+                } else {
+                    /* tmpが全角 かつ prevtmpが全角orスペースの場合 */
+                    // tmpをそのまま出力
+                    result += tmp;
+                }
+
+                /* tmpがスペースの場合 */
+            } else if (tmp.match(/\s/)) {
+                /* tmpがスペース かつ markingフラグが true の場合 */
+                if (marking == true) {
+                    /* tmpがスペース かつ markingフラグが true かつ nexttmp が半角の場合 */
+                    if (nexttmp.match(/[0-9a-zA-Z_!-/:-@[-`{-~]+/)) {
+                        // tmpをそのまま出力
+                        result += tmp;
+
+                        /* tmpがスペース かつ markingフラグが true かつ nexttmp が全角の場合 */
+                    } else {
+                        // tmpの前にマークアップエンドを出力
+                        result += markupend + tmp;
+                        marking = false;
+                    }
+
+                    /* tmpがスペース かつ markingフラグが false の場合 */
+                } else {
+                    // tmpをそのまま出力
+                    result += tmp;
+                }
+
+                /* tmpが半角の場合 */
+            } else {
+                /* tmpが半角 かつ マークアップ中ではない場合 */
+                if (marking == false) {
+                    // tmpの前にマークアップスタートを出力
+                    result += markupstart + tmp;
+                    marking = true;
+                    /* tmpが半角 かつ prevtmp が半角orスペースの場合 */
+                } else {
+                    // tmpをそのまま出力
+                    result += tmp;
+                }
+            }
+
+            /* 文字列の末尾がスペースの場合はマークエンドが出力されないので無理矢理出力させる */
+            /* tmpが最後の文字 かつ マーキング中の場合 */
+            if ((marking == true) && (i == len - 1)) {
+                result += markupend;
+                marking = false;
+            }
+            // console.log(tmp);
+        }
+
+        // 最後にresultを返す
+        return result;
+
+    }
+
+
+    // Aリンクを作る関数
+    function createALink() {
+        /* テキストエリアから文字列取得＆文頭・文末の改行を削除        */
+        var str3 = getText('#src');
+
+        /* A リンク作成　タイトル入れるの難しいので保留
+
+        // リンク先のページタイトル取得
+        if (encURL(str3)) {
+            var linkTitle = getTitle(str3);
+            };
+
+        if (linkTitle) {
+            var res3 = '<a href="' + str3 + '" title="' + linkTitle + '">' + linkTitle + '</a>';
+        } else { */
+        var res3 = '<a href="' + str3 + '">' + str3 + '</a>';
+        /* } */
+        // 最後にresを出力
+        updateResult(res3, "#dst");
+
+        // 次の入力に備え、数秒後にテキストエリアをクリア
+        resetTextArea();
+    }
+
+    //]]>
+    </script>
+    <!-- BOX2 スクリプト -->
+    <!-- BOX3 スクリプト -->
+    <script type="text/javascript">
+    /* br2n関数の定義 引数なし */
+    function br2n() {
+
+        /* テキストエリアから文字列取得＆文頭・文末の改行を削除        */
+        var tex = getText('#src');
+
+        // 変換開始
+        tex = tex.replace(/(<br \/>|<br>)/g, "\n\n");
+
+        /* 変換終了 textareaへ結果を表示する 引数（結果文字列、出力するtextarea名)   */
+        updateResult(tex, "#dst");
+
+        // 次の入力に備え、数秒後にテキストエリアをクリア
+        resetTextArea();
+
+    }
+
+    /* n2br関数の定義 引数なし */
+    function n2br() {
+
+        /* テキストエリアから文字列取得＆文頭・文末の改行を削除        */
+        var tex = getText('#src');
+
+        // 変換開始
+        tex = tex.replace(/\n/g, "<br />");
+
+        /* 変換終了 textareaへ結果を表示する 引数（結果文字列、出力するtextarea名)   */
+        updateResult(tex, "#dst");
+
+        // 次の入力に備え、数秒後にテキストエリアをクリア
+        resetTextArea();
+    }
+
+    /* br2nn関数の定義 引数なし */
+    function br2nn() {
+        /* テキストエリアから文字列取得＆文頭・文末の改行を削除        */
+        var tex = getText('#src');
+
+        // 変換開始
+        tex = tex.replace(/\n/g, "\n\n");
+
+        /* 変換終了 textareaへ結果を表示する 引数（結果文字列、出力するtextarea名)   */
+        updateResult(tex, "#dst");
+        // 次の入力に備え、数秒後にテキストエリアをクリア
+        resetTextArea();
+    }
+
+    /* brbr2n関数の定義 改行を1/2にする 引数なし */
+    function brbr2n() {
+        /* テキストエリアから文字列取得＆文頭・文末の改行を削除        */
+        var tex = getText('#src');
+
+        // 変換開始
+        tex = tex.replace(/\n\n/g, "\n");
+
+        /* 変換終了 textareaへ結果を表示する 引数（結果文字列、出力するtextarea名)   */
+        updateResult(tex, "#dst");
+        // 次の入力に備え、数秒後にテキストエリアをクリア
+        resetTextArea();
+    }
+
+
+    function remove_htmltags() {
+
+        /* テキストエリアから文字列取得＆文頭・文末の改行を削除        */
+        var str = getText('#src');
+        delete01 = new RegExp(/\n/g);
+        delete02 = str.replace(delete01, "");
+        delete03 = new RegExp(/>(.*?)</g);
+        delete04 = delete02.replace(delete03, ">\n$1\n<");
+        rgexp = new RegExp(/<("[^"]*"|'[^']*'|[^'">])*>/g);
+        convertedtext = delete04.replace(rgexp, "");
+
+        /* 変換終了 textareaへ結果を表示する 引数（結果文字列、出力するtextarea名)   */
+        updateResult(convertedtext, "#dst");
+        // 次の入力に備え、数秒後にテキストエリアをクリア
+        resetTextArea();
+    }
+
+
+    /* 指定のフォーマットに変換
+    連絡先 \t 090-12345678 を < 連絡先 > 090-12345678 にする */
+    function setformlist() {
+
+        /* テキストエリアから文字列取得＆文頭・文末の改行を削除        */
+        var str = getText('#src');
+
+        /* 行ごとに分解 */
+        var row = str.split("\n");
+        var oneword = '';
+        var res = '';
+
+        // 検索キーワードを設定
+        var seikiword = "\t"; // tabを探す
+
+        // 変数seikiwordを検索する正規表現オブジェクト「oSearchObj」を作成
+        var oSearchObj = new RegExp(seikiword);
+
+        // 検索変換開始
+        for (i in row) {
+            if (row[i].match(oSearchObj)) { // tabがある行だったら
+                oneword = row[i].split("\t"); // tabで分割する
+                res += "< " + oneword[0] + " > "; //ヒットした前2つをフォーマットに代入する
+                res += oneword[1] + "\n";
+            } else {
+                res += row[i] + "\n";
+            }
+        }
+
+        /* textareaへ結果を表示する */
+        updateResult(res, "#dst");
+        // 次の入力に備え、数秒後にテキストエリアをクリア
+        resetTextArea();
+    }
+
+
+    /* <em><strong>を指定の方式に置換 */
+    function replaceorignaltag() {
+
+        /* テキストエリアから文字列取得＆文頭・文末の改行を削除        */
+        var str = getText('#src');
+
+
+        /* globalサーチ：文字列中にある'<em>'を [b][color=CC0000][/color][/b] */
+        var str2 = str.replace(/\&nbsp;/gi, '');
+        var str3 = str2.replace(/<p>/gi, '');
+        var str4 = str3.replace(/<\/p>/gi, '');
+        var str5 = str4.replace(/<em>/gi, '[b][color=CC0000]');
+        var str6 = str5.replace(/<\/em>/gi, '[/color][/b]');
+        var str7 = str6.replace(/<strong>/gi, '[b][color=CC0000]');
+        var str8 = str7.replace(/<\/strong>/gi, '[/color][/b]');
+        var str9 = str8.replace(/<img .*>/gi, '');
+        var str10 = str9.replace(/<br>/gi, '');
+
+        /* textareaへ結果を表示する */
+        updateResult(str10, "#dst");
+        // 次の入力に備え、数秒後にテキストエリアをクリア
+        resetTextArea();
+    }
+
+
+
+    //]]>
+    </script>
+    <!-- BOX3 スクリプト -->
+    <script language="javascript">
+    function coltonum(frm) {
+        //10以下の数字をアルファベットにするための配列 11以上は２６進数の返り値そのままでok
+        alp = new Array("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z");
+
+        var num = document.getElementById("excelbefore").value;
+        var num_obj = new Number(num);
+
+        if (isNumeric(num)) {
+
+            i = num;
+            var res = [];
+            var mod = 100;
+            while (i > 0) {
+                var dev = Math.floor(i / 26);
+                if (dev > 0) {
+                    res.push(dev);
+                    console.log(dev);
+                }
+                i = i - dev * 26;
+                if (i < 26) {
+                    res.push(i);
+                    i = 0;
+                }
+            }
+
+            console.log(res);
+
+            var conv = "";
+            $.each(res, function(i, v) {
+                console.log('v=' + v);
+                conv += alp[v - 1]; //アルファベットに変換
+            });
+            console.log('conv=' + conv);
+
+            document.getElementById("excelafter").value = "num to letter doesn't work now";
+            // document.getElementById("excelafter").value = conv.toUpperCase();
+
+        } else {
+
+            var conv = 0; //変換後の数字
+
+            //桁数ごとに取り出して数字に変換
+            var i = 0; //処理中の桁数
+            while (i < num.length) {
+                var toridashi = num.substr(i, 1); //先頭から一文字ずつ取り出す
+                console.log(toridashi);
+                var c = toridashi.toLowerCase();
+
+                //アルファベットを数字にする A=1, Z=26にする
+                var suji = alp.indexOf(c) + 1;
+                console.log(suji);
+
+                var keta = num.length - i - 1; //桁数-1
+                //console.log("Math.pow(26,"+keta+")");
+
+                //桁ごとに26を掛けてトータル数字にする
+                var kisu = Math.pow(26, keta);
+                console.log("kisu:" + kisu);
+                var tasu = kisu * suji;
+                console.log("tasu:" + tasu);
+                console.log("conv:" + conv);
+                conv = conv + tasu;
+                console.log("conv+tasu:" + conv);
+                i++;
+            }
+            //  conv = parseInt("p",26);
+            document.getElementById("excelafter").value = conv;
+        }
+    }
+    // 数値のチェック
+    function isNumeric(num) {
+        if (num.match(/[^0-9]/g)) {
+            // alert("数値以外が含まれています。");
+            return false;
+        }
+        return true;
+    }
+    </script>
+    <!-- ロード時に実行される関数、グローバル共用関数 -->
+    <script language="javascript">
+    // ページ表示時にウィンドウ幅によってレイアウトを自動修正（body onloadが利かなかった、関数実行をちょい遅らせる。)
+    window.setTimeout(function() {
+        reLayoutColumn();
+    }, 50); // 秒数
+
+    <!-- ウィンドウ横幅が狭かったら縦に並べて表示 -->
+    function reLayoutColumn() {
+        if (getBrowserWidth() < 1060) {
+            document.getElementById('container').style.width = '530px';
+        } else {
+            document.getElementById('container').style.width = '1060px';
+        }
+    }
+
+    // getBrowserWidth() by Cameron Adams
+    // http://www.themaninblue.com/experiment/ResolutionLayout/
+    function getBrowserWidth() {
+        if (window.innerWidth) {
+            return window.innerWidth;
+        } else if (document.documentElement && document.documentElement.clientWidth != 0) {
+            return document.documentElement.clientWidth;
+        } else if (document.body) {
+            return document.body.clientWidth;
+        }
+        return 0;
+    }
+
+
+
+    /*   [CTRL]+[ENTER]でjsボタン押下するようにする */
+    /* すべてのキーアップイベントを監視する */
+    /* キーアップがあったらinput関数呼び出し */
+    window.document.onkeydown = input;
+
+    /*   [CTRL]+[ENTER]でjsボタン押下 */
+    function input(theEvent) {
+        if (theEvent.ctrlKey) {
+            if (theEvent.keyCode == 13) {
+                /*   covert('js') だけではイベントハンドラとコールバック関数の問題から
+                    convert関数の中のreturn funcion()クロージャまで呼び出せないので
+                    一度変数fromKeyConvertに格納し、変数から呼び出すことでクロージャ内をreturnさせる。
+                    参考　http://karafuto50.blog117.fc2.com/?mode=m&no=136　*/
+                var fromKeyConvert = syntaxDisplay('js');
+                fromKeyConvert();
+                return false;
+            }
+        }
+    }
+
+
+    /* クリア連打対策　グローバル変数timerをここで宣言しておく */
+    var timer = '';
+
+    /* 自動クリアon,off  デフォルト = true = on*/
+    var bEnableTimer = true;
+
+    // タイマーon/off切り替え
+    function enableTimer() {
+        if (bEnableTimer == true) {
+            bEnableTimer = false;
+            $.cookie('Timer', 'off', {
+                expires: 99
+            }); //書き込み{保存days}
+        } else {
+            bEnableTimer = true;
+            $.cookie('Timer', 'on', {
+                expires: 99
+            }); //書き込み{保存days}
+        }
+        $('#enableTimerButton').toggleClass("switchoff").toggleClass("switchon");
+    }
+
+
+    /* テキストエリアから文字列取得＆文頭・文末の改行を削除        */
+    function getText(id) {
+        var str = $(id).val();
+        str = removeBreaks(str);
+        return str;
+    }
+
+    /* 文頭・文末の改行を削除        */
+    function removeBreaks(str) {
+        // 文頭
+        str = str.replace(/^(\r\n)+|^(\n\r)+|^(\r)+|^(\n)+/gi, "");
+        // 文末
+        str = str.replace(/(\r\n)+$|(\n\r)+$|(\r)+$|(\n)+$/gi, "");
+        return str;
+    }
+
+
+
+    // テキストエリアを自動リセットするグローバル関数　引数が秒数
+    function resetTextArea(second) {
+        if (bEnableTimer) {
+            window.clearTimeout(timer);
+            // 引数なければ3秒にする
+            if (second == undefined) second = 3;
+
+            // alert(second + '秒後にクリア');
+            //clearTimeoutを使うためグローバル変数timerにsetTimeoutを代入する
+            timer = window.setTimeout(function() {
+                // クリア開始
+                $('#src').val('');
+                $('#dst').val('');
+                $('#syntaxfirstline').val('');
+                $('#syntaxhighlightline').val('');
+            }, second * 1000); // 秒数
+        }
+    }
+
+
+    // 次の入力に備え、指定秒たったらテキストエリアをリセットする
+    /* 結果エリアに文字列を表示＆コピーしやすいように結果エリアをフォーカスする        */
+    function updateResult(text, area) {
+        $(area).val(text);
+        /* コピーしやすいようにする         */
+        $(area).focus(); //結果テキストエリアをフォーカスする
+        $(area).select(); //結果テキストエリアを全選択する
+    }
+
+    </script>
+    <!-- 共用関数ここまで -->
+    <!-- google analytics -->
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-24472358-2']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+    <!-- google analytics -->
+    <!-- jquery.cookie.jsをコピペ（google ajax apiにない、自前で用意したくない。） ここから -->
+    <script type="text/javascript">
+    /**
+     * " jquery.cookie.js"
+     *
+     * jQuery Cookie plugin
+     *
+     * Copyright (c) 2010 Klaus Hartl (stilbuero.de)
+     * Dual licensed under the MIT and GPL licenses:
+     * http://www.opensource.org/licenses/mit-license.php
+     * http://www.gnu.org/licenses/gpl.html
+     *
+     */
+    jQuery.cookie = function(key, value, options) {
+
+        // key and at least value given, set cookie...
+        if (arguments.length > 1 && String(value) !== "[object Object]") {
+            options = jQuery.extend({}, options);
+
+            if (value === null || value === undefined) {
+                options.expires = -1;
+            }
+
+            if (typeof options.expires === 'number') {
+                var days = options.expires,
+                    t = options.expires = new Date();
+                t.setDate(t.getDate() + days);
+            }
+
+            value = String(value);
+
+            return (document.cookie = [
+                encodeURIComponent(key), '=',
+                options.raw ? value : encodeURIComponent(value),
+                options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
+                options.path ? '; path=' + options.path : '',
+                options.domain ? '; domain=' + options.domain : '',
+                options.secure ? '; secure' : ''
+            ].join(''));
+        }
+
+        // key and possibly options given, get cookie...
+        options = value || {};
+        var result, decode = options.raw ? function(s) {
+            return s;
+        } : decodeURIComponent;
+        return (result = new RegExp('(?:^|; )' + encodeURIComponent(key) + '=([^;]*)').exec(document.cookie)) ? decode(result[1]) : null;
+    };
+    </script>
+    <!-- jquery.cookie.js -->
+</body>
+
+</html>

@@ -16,12 +16,8 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <script type="text/javascript" src="http://momentjs.com/downloads/moment.min.js"></script>
-
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie
 /2.1.1/js.cookie.min.js"></script>
-
-
-
     <style type="text/css">
     .btn {
         margin-bottom: 5px;
@@ -132,8 +128,111 @@
                         <button class="btn btn-default" onclick="syntaxDisplay('sql')">SQL</button>
                         <button class="btn btn-default" onclick="syntaxDisplay('c')">C</button>
                         <button class="btn btn-default" onclick="syntaxDisplay('csharp')">C#</button>
-                        <button class="btn btn-default" onclick="syntaxDisplay('objc')">Objective-C</button>
-                        <br>
+                        <button class="btn btn-default" onclick="syntaxDisplay('objective_c')">Objective-C</button>
+                        <button class="btn btn-default" onclick="syntaxDisplay('swift')">swift</button>
+                        <button class="btn btn-default" onclick="syntaxDisplay('scss')">scss</button>
+                        <button class="btn btn-default" onclick="syntaxDisplay('sass')">sass</button>
+                        <button class="btn btn-default" onclick="syntaxDisplay('apache')">apache</button>
+                        <button class="btn btn-default" onclick="syntaxDisplay('nginx')">nginx</button>
+                        <button class="btn btn-default" onclick="syntaxDisplay('diff')">diff</button>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal">
+                            More...
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="myModalLabel">More Languages</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <button class="btn btn-default" onclick="syntaxDisplay('apache')">apache</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('applescript')">applescript</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('c')">c</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('clojure')">clojure</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('coffeescript')">coffeescript</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('common_lisp')">common_lisp</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('conf')">conf</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('cpp')">cpp</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('csharp')">csharp</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('css')">css</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('dart')">dart</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('diff')">diff</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('elixir')">elixir</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('erb')">erb</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('erlang')">erlang</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('factor')">factor</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('gherkin')">gherkin</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('glsl')">glsl</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('go')">go</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('groovy')">groovy</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('haml')">haml</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('handlebars')">handlebars</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('haskell')">haskell</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('html')">html</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('http')">http</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('ini')">ini</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('io')">io</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('java')">java</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('javascript')">javascript</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('json')">json</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('json-doc')">json-doc</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('liquid')">liquid</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('literate_coffeescript')">literate_coffeescript</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('literate_haskell')">literate_haskell</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('llvm')">llvm</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('lua')">lua</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('make')">make</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('markdown')">markdown</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('matlab')">matlab</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('moonscript')">moonscript</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('nginx')">nginx</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('nim')">nim</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('objective_c')">objective_c</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('ocaml')">ocaml</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('perl')">perl</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('php')">php</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('plaintext')">plaintext</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('powershell')">powershell</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('praat')">praat</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('prolog')">prolog</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('properties')">properties</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('puppet')">puppet</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('python')">python</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('qml')">qml</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('r')">r</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('racket')">racket</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('ruby')">ruby</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('rust')">rust</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('sass')">sass</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('scala')">scala</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('scheme')">scheme</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('scss')">scss</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('sed')">sed</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('shell')">shell</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('slim')">slim</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('smalltalk')">smalltalk</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('sml')">sml</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('sql')">sql</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('swift')">swift</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('tcl')">tcl</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('tex')">tex</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('toml')">toml</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('tulip')">tulip</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('vb')">vb</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('viml')">viml</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('xml')">xml</button>
+                                        <button class="btn btn-default" onclick="syntaxDisplay('yaml')">yaml</button>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" id="htmlescapecheck"> Escape symbols in your text</label>
@@ -259,6 +358,9 @@
 
         // 次の入力に備え、数秒後にテキストエリアをクリア
         resetTextArea();
+
+        // Close modal(for "more" mode)
+        $('#myModal').modal('hide');
     };
 
     // HTMLタグをエスケープする関数
@@ -557,9 +659,11 @@
             str = makeupOnebyteStrings(str, "**");
         } else if (mode == "space") {
             str = makeupOnebyteStrings(str, " ");
+        } else {
+            mode = "no"
         }
 
-            Cookies.set('md_option', mode); //書き込み{保存days}
+        Cookies.set('md_option', mode); //書き込み{保存days}
 
         return str;
     }
@@ -1107,17 +1211,10 @@
     </script>
     <!-- ロード時に実行される関数、グローバル共用関数 -->
     <script language="javascript">
-
-
-
-
-
-
-
     (function() {
-            // Revert option
-            var mode = Cookies.get('md_option');
-            $('input[value=' + mode + ']').prop('checked', true);
+        // Revert option
+        var mode = Cookies.get('md_option');
+        $('input[value=' + mode + ']').prop('checked', true);
     })();
 
 
@@ -1230,8 +1327,6 @@
     })();
     </script>
     <!-- google analytics -->
-
-
 </body>
 
 </html>

@@ -1,5 +1,12 @@
 # Online Text to Markdown Converter
 
+## Demo
+https://online-markdown-converter.herokuapp.com/
+
+Paste you text into the top left box and click `Markdown with quoting`.
+
+If you don't need auto reset textarea, click the `off` button on the right top position of the screen.
+
 ## Features
 - Paste your email to your groupware with quoted marks of markdown.
 - Add line breaks for markdown automatically.

@@ -3,8 +3,7 @@
 ## Demo
 https://online-markdown-converter.herokuapp.com/
 
-Paste you text into the top left box and click `Markdown with quoting`.
-
+Paste you text into the top left box and click `Markdown with quotes`.  
 If you don't need auto reset textarea, click the `off` button on the right top position of the screen.
 
 ## Features

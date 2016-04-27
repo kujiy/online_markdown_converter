@@ -77,6 +77,7 @@
         </div>
     </div>
     <hr>
+    <!-- Convert buttons -->
     <div class="row">
         <div class="box1 col-md-6">
             <div class="panel panel-default">
@@ -331,15 +332,56 @@
             </div>
         </div>
         <!-- BOX 2 のボタン終わり -->
-        <!-- BOX2下側 ボタン end-->
-        <!-- BOX2 テキストエリア「後」 -->
     </div>
     <!-- floatright box -->
     </div>
-    <!-- BOX1 スクリプト開始 -->
+
+
+
+
+
+    <!-- ------------------------------------------------------------- -->
+    <!-- ------------------------------------------------------------- -->
+    <!-- ------------------------------------------------------------- -->
+    <!-- ------------------------------------------------------------- -->
+    <!-- ------------------------------------------------------------- -->
+
+
+
+
+
+
+
+
+
+
+
+
+
     <script language="javascript">
-    /* SyntaxHighlighter用にコンバートするsyntaxDisplay関数の定義 */
-    /* 引数１は言語名：<pre class="brush : 言語"> に使われる*/
+    <!-- Document.ready -->
+    (function() {
+
+        // Revert option
+        var mode = Cookies.get('md_option');
+        $('input[value=' + mode + ']').prop('checked', true);
+
+    })();
+
+
+
+    // <!-- Start BOX1 scripts -->
+
+
+     /**
+      * Make syntax highlighted text
+      *
+      * @method      syntaxDisplay
+      * @constructor
+      * @author kuji
+      * @date        2016-04-27T10:03:52+0900
+      * @param       {[string]}                 lang [use for syntax markdown ```$Lang ]
+      */
     function syntaxDisplay(lang) {
         /* Get strings from Text area & Delete line breaks at the beginning and end of each line   */
         var str = getText('#src');
@@ -347,7 +389,7 @@
         /* res for the last ourput */
         var res = '';
 
-        /* 引用マークを入れて次に引数でもらった言語名を入れる              */
+        /* 引用マークを入れて次に引数でもらった言語名を入れる   */
         res += '```' + lang + "\n";
 
         /* エスケープするかどうかのチェックbHtmlEscape変数をそのまま代入
@@ -518,26 +560,6 @@
         resetTextArea('15');
 
     };
-
-    // 動作チェック用のサンプルタグを変換元テキストエリアへ挿入
-    function insertSample(type) {
-        if (type == "html") {
-            var text = "<div class=\"box\">タグ&タグ</div>";
-        } else if (type == "apache") {
-            var text = "\n153.179.28.193 - - [12/Oct/2015:09:30:10 +0900] \"GET /samp.php?callback=11 HTTP/1.1\" 200 34349 \"https://example.com/test?sh=1#/\" \"Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; Touch; MAFSJS; rv:11.0) like Gecko\"\n172.22.123.153 - - [12/Oct/2015:09:30:16 +0900] \"GET /serv/authCheck/?a=7 HTTP/1.1\" 200 37 \"-\" \"Mozilla/5.0 (Windows; U; Windows NT 5.1; ja; rv:1.9.2.16) Gecko/20110319 Firefox/3.6.16 ( .NET CLR 3.5.30729)\"\n153.179.28.193 - - [12/Oct/2015:09:30:16 +0900] \"GET /samp.php?callback=2 HTTP/1.1\" 200 34346 \"https://example.com/test?sh=1#/\" \"Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; Touch; MAFSJS; rv:11.0) like Gecko\"\n172.22.123.153 - - [12/Oct/2015:09:30:30 +0900] \"GET /serv/authCheck/?a=7 HTTP/1.1\" 200 37 \"-\" \"Mozilla/5.0 (Windows; U; Windows NT 5.1; ja; rv:1.9.2.16) Gecko/20110319 Firefox/3.6.16 ( .NET CLR 3.5.30729)\"\n153.179.28.193 - - [12/Oct/2015:09:30:30 +0900] \"GET /samp.php?callback=13 HTTP/1.1\" 200 34349 \"https://example.com/test?sh=1#/\" \"Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; Touch; MAFSJS; rv:11.0) like Gecko\"\n121.95.51.111 - - [12/Oct/2015:09:30:32 +0900] \"POST /serv/guest/ HTTP/1.1\" 200 207 \"https://mapmark.fmworld.net/serv/login/\" \"Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko\"\n121.95.51.111 - - [12/Oct/2015:09:30:32 +0900] \"POST /serv/start/guest/ HTTP/1.1\" 200 1133 \"https://mapmark.fmworld.net/serv/login/\" \"Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko\"\n121.95.51.111 - - [12/Oct/2015:09:30:32 +0900] \"POST / HTTP/1.1\" 302 - \"https://mapmark.fmworld.net/serv/start/guest/\" \"Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko\"\n180.198.159.4 - - [25/Feb/2016:09:46:10 +0900] \"GET /api/tabi_spot_list.php?callback=jQuery203017152280536233116_1456360954757&centerlat=34.94692906815382&centerlng=137.14934462518695&centerrange=50000&zoom=14&lang=ja&page_size=20&page=1&sort=5&cidstr=1%2C2%2C6%2C4%2C7%2C5%2C8&female=0&spotkbn=2&area=&keyword=&tile_scroll_page=0&tile_scroll_id=0&_=1456360954782 HTTP/1.1\" 200 47788 \"https://mapmark.fmworld.net/?search=1&filter_spotkbn=rrb&filter_keyword=\" \"Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; Touch; rv:11.0) like Gecko\"\n153.159.139.180 - mapmark [25/Feb/2016:09:46:02 +0900] \"GET /api/tabi_spot_list.php?apikey=9e9837dd1e1dee136eb44ab9a43c1a65&tkn=34fc946de9af80128704b9990058c00653e5b92effe87eceb1c38fa30719b656&centerlat=34.89222738404376&centerlng=134.081810452044&centerrange=508&keyword=%E9%A3%9F%E5%A0%82&spotkbn=2&sort=5&female=0&zoom=16.072794 HTTP/1.1\" 200 45997 \"-\" \"Dalvik/1.6.0 (Linux; U; Android 4.4.2; M01 Build/V01R15L)\"\n153.159.139.180 - mapmark [25/Feb/2016:09:46:03 +0900] \"GET /api/tabi_spot_list.php?apikey=9e9837dd1e1dee136eb44ab9a43c1a65&tkn=34fc946de9af80128704b9990058c00653e5b92effe87eceb1c38fa30719b656&centerlat=34.89369286390309&centerlng=134.08656165003777&centerrange=508&keyword=%E9%A3%9F%E5%A0%82&spotkbn=2&sort=5&female=0&zoom=16.072794 HTTP/1.1\" 200 46232 \"-\" \"Dalvik/1.6.0 (Linux; U; Android 4.4.2; M01 Build/V01R15L)\"\n180.198.159.4 - - [25/Feb/2016:09:46:10 +0900] \"GET /api/tabi_spot_list.php?callback=jQuery203017152280536233116_1456360954757&centerlat=34.94692906815382&centerlng=137.14934462518695&centerrange=50000&zoom=14&lang=ja&page_size=20&page=1&sort=5&cidstr=1%2C2%2C6%2C4%2C7%2C5%2C8&female=0&spotkbn=2&area=&keyword=&tile_scroll_page=0&tile_scroll_id=0&_=1456360954782 HTTP/1.1\" 200 47788 \"https://mapmark.fmworld.net/?search=1&filter_spotkbn=rrb&filter_keyword=\" \"Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; Touch; rv:11.0) like Gecko\"\n153.159.139.180 - mapmark [25/Feb/2016:09:46:05 +0900] \"GET /api/tabi_spot_list.php?apikey=9e9837dd1e1dee136eb44ab9a43c1a65&tkn=34fc946de9af80128704b9990058c00653e5b92effe87eceb1c38fa30719b656&centerlat=34.892590387683136&centerlng=134.08780317753553&centerrange=508&keyword=%E9%A3%9F%E5%A0%82&spotkbn=2&sort=5&female=0&zoom=16.072794 HTTP/1.1\" 200 46233 \"-\" \"Dalvik/1.6.0 (Linux; U; Android 4.4.2; M01 Build/V01R15L)\"";
-        } else if (type == "bullet") {
-            var text = "abc\nbcd\n efg\n  uid\n   aud\n\n    abc\"";
-        }
-
-        $('#src').val(text);
-
-        // クリアタイマーをリセット
-        window.clearTimeout(timer);
-    }
-
-
-
-
 
 
 
@@ -1207,10 +1229,18 @@
 
 
 
-    //]]>
-    </script>
-    <!-- BOX3 スクリプト -->
-    <script language="javascript">
+
+
+
+
+
+
+
+
+
+
+
+    // <!-- BOX3 スクリプト -->
     function coltonum(frm) {
         //10以下の数字をアルファベットにするための配列 11以上は２６進数の返り値そのままでok
         alp = new Array("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z");
@@ -1288,18 +1318,39 @@
         }
         return true;
     }
-    </script>
-    <!-- ロード時に実行される関数、グローバル共用関数 -->
-    <script language="javascript">
-    (function() {
-        // Revert option
-        var mode = Cookies.get('md_option');
-        $('input[value=' + mode + ']').prop('checked', true);
-    })();
 
 
 
 
+
+
+
+
+
+
+// debug ---------------------------------------------------------
+
+
+    // 動作チェック用のサンプルタグを変換元テキストエリアへ挿入
+    function insertSample(type) {
+        if (type == "html") {
+            var text = "<div class=\"box\">タグ&タグ</div>";
+        } else if (type == "apache") {
+            var text = "\n153.179.28.193 - - [12/Oct/2015:09:30:10 +0900] \"GET /samp.php?callback=11 HTTP/1.1\" 200 34349 \"https://example.com/test?sh=1#/\" \"Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; Touch; MAFSJS; rv:11.0) like Gecko\"\n172.22.123.153 - - [12/Oct/2015:09:30:16 +0900] \"GET /serv/authCheck/?a=7 HTTP/1.1\" 200 37 \"-\" \"Mozilla/5.0 (Windows; U; Windows NT 5.1; ja; rv:1.9.2.16) Gecko/20110319 Firefox/3.6.16 ( .NET CLR 3.5.30729)\"\n153.179.28.193 - - [12/Oct/2015:09:30:16 +0900] \"GET /samp.php?callback=2 HTTP/1.1\" 200 34346 \"https://example.com/test?sh=1#/\" \"Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; Touch; MAFSJS; rv:11.0) like Gecko\"\n172.22.123.153 - - [12/Oct/2015:09:30:30 +0900] \"GET /serv/authCheck/?a=7 HTTP/1.1\" 200 37 \"-\" \"Mozilla/5.0 (Windows; U; Windows NT 5.1; ja; rv:1.9.2.16) Gecko/20110319 Firefox/3.6.16 ( .NET CLR 3.5.30729)\"\n153.179.28.193 - - [12/Oct/2015:09:30:30 +0900] \"GET /samp.php?callback=13 HTTP/1.1\" 200 34349 \"https://example.com/test?sh=1#/\" \"Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; Touch; MAFSJS; rv:11.0) like Gecko\"\n121.95.51.111 - - [12/Oct/2015:09:30:32 +0900] \"POST /serv/guest/ HTTP/1.1\" 200 207 \"https://mapmark.fmworld.net/serv/login/\" \"Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko\"\n121.95.51.111 - - [12/Oct/2015:09:30:32 +0900] \"POST /serv/start/guest/ HTTP/1.1\" 200 1133 \"https://mapmark.fmworld.net/serv/login/\" \"Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko\"\n121.95.51.111 - - [12/Oct/2015:09:30:32 +0900] \"POST / HTTP/1.1\" 302 - \"https://mapmark.fmworld.net/serv/start/guest/\" \"Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko\"\n180.198.159.4 - - [25/Feb/2016:09:46:10 +0900] \"GET /api/tabi_spot_list.php?callback=jQuery203017152280536233116_1456360954757&centerlat=34.94692906815382&centerlng=137.14934462518695&centerrange=50000&zoom=14&lang=ja&page_size=20&page=1&sort=5&cidstr=1%2C2%2C6%2C4%2C7%2C5%2C8&female=0&spotkbn=2&area=&keyword=&tile_scroll_page=0&tile_scroll_id=0&_=1456360954782 HTTP/1.1\" 200 47788 \"https://mapmark.fmworld.net/?search=1&filter_spotkbn=rrb&filter_keyword=\" \"Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; Touch; rv:11.0) like Gecko\"\n153.159.139.180 - mapmark [25/Feb/2016:09:46:02 +0900] \"GET /api/tabi_spot_list.php?apikey=9e9837dd1e1dee136eb44ab9a43c1a65&tkn=34fc946de9af80128704b9990058c00653e5b92effe87eceb1c38fa30719b656&centerlat=34.89222738404376&centerlng=134.081810452044&centerrange=508&keyword=%E9%A3%9F%E5%A0%82&spotkbn=2&sort=5&female=0&zoom=16.072794 HTTP/1.1\" 200 45997 \"-\" \"Dalvik/1.6.0 (Linux; U; Android 4.4.2; M01 Build/V01R15L)\"\n153.159.139.180 - mapmark [25/Feb/2016:09:46:03 +0900] \"GET /api/tabi_spot_list.php?apikey=9e9837dd1e1dee136eb44ab9a43c1a65&tkn=34fc946de9af80128704b9990058c00653e5b92effe87eceb1c38fa30719b656&centerlat=34.89369286390309&centerlng=134.08656165003777&centerrange=508&keyword=%E9%A3%9F%E5%A0%82&spotkbn=2&sort=5&female=0&zoom=16.072794 HTTP/1.1\" 200 46232 \"-\" \"Dalvik/1.6.0 (Linux; U; Android 4.4.2; M01 Build/V01R15L)\"\n180.198.159.4 - - [25/Feb/2016:09:46:10 +0900] \"GET /api/tabi_spot_list.php?callback=jQuery203017152280536233116_1456360954757&centerlat=34.94692906815382&centerlng=137.14934462518695&centerrange=50000&zoom=14&lang=ja&page_size=20&page=1&sort=5&cidstr=1%2C2%2C6%2C4%2C7%2C5%2C8&female=0&spotkbn=2&area=&keyword=&tile_scroll_page=0&tile_scroll_id=0&_=1456360954782 HTTP/1.1\" 200 47788 \"https://mapmark.fmworld.net/?search=1&filter_spotkbn=rrb&filter_keyword=\" \"Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; Touch; rv:11.0) like Gecko\"\n153.159.139.180 - mapmark [25/Feb/2016:09:46:05 +0900] \"GET /api/tabi_spot_list.php?apikey=9e9837dd1e1dee136eb44ab9a43c1a65&tkn=34fc946de9af80128704b9990058c00653e5b92effe87eceb1c38fa30719b656&centerlat=34.892590387683136&centerlng=134.08780317753553&centerrange=508&keyword=%E9%A3%9F%E5%A0%82&spotkbn=2&sort=5&female=0&zoom=16.072794 HTTP/1.1\" 200 46233 \"-\" \"Dalvik/1.6.0 (Linux; U; Android 4.4.2; M01 Build/V01R15L)\"";
+        } else if (type == "bullet") {
+            var text = "abc\nbcd\n efg\n  uid\n   aud\n\n    abc\"";
+        }
+
+        $('#src').val(text);
+
+        // Reset the clear timer
+        window.clearTimeout(timer);
+    }
+
+
+
+
+// ---------------------------------------------------------
 
 
 
@@ -1374,37 +1425,48 @@
                 // クリア開始
                 $('#src').val('');
                 $('#dst').val('');
-                $('#syntaxfirstline').val('');
-                $('#syntaxhighlightline').val('');
             }, second * 1000); // 秒数
         }
     }
 
 
-    // 次の入力に備え、指定秒たったらテキストエリアをリセットする
-    /* 結果エリアに文字列を表示＆コピーしやすいように結果エリアをフォーカスする        */
+    // Clear textarea after several seconds to get ready for next user input
+    /* Show converted text on the result area and focus it  */
     function updateResult(text, area) {
         $(area).val(text);
-        /* コピーしやすいようにする         */
-        $(area).focus(); //結果テキストエリアをフォーカスする
-        $(area).select(); //結果テキストエリアを全選択する
+        /* Make easy to copy  */
+        $(area).focus();  // Focus the result textarea
+        $(area).select(); // Select all of the converted text
     }
-    </script>
-    <!-- 共用関数ここまで -->
-    <!-- google analytics -->
-    <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-24472358-2']);
-    _gaq.push(['_trackPageview']);
 
-    (function() {
-        var ga = document.createElement('script');
-        ga.type = 'text/javascript';
-        ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(ga, s);
-    })();
+
+
+
+
+
+
+
+
+
+
+    // <!-- 共用関数ここまで -->
+
+
+
+    // <!-- google analytics -->
+
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+
+  ga('set', 'dimension1', 'online-markdown-converter' );
+
+  ga('create', 'UA-77010824-1', 'auto');
+  ga('send', 'pageview');
+
+
     </script>
     <!-- google analytics -->
 </body>

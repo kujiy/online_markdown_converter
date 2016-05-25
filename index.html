@@ -124,6 +124,28 @@
                         </form>
                     </p>
                 </div>
+
+                <div class="panel-heading">Markdown table</div>
+                <div class="panel-body">
+                    <p>
+                        <button class="btn btn-default" onclick="markdown_table()">Tabbed text to Markdown table</button>
+                        (text copied from excel)
+                        <button class="btn btn-default" onclick="markdown_table_to_text()">Markdown table to tabbed text</button>
+                        <form id="radio_form">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsTables" value="first-row-title"> First row with titles(not supported yet)
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsTables" value="first-row-nums" checked> First row the data
+                                </label>
+                            </div>
+                        </form>
+                    </p>
+                </div>
+
                 <div class="panel-heading"> Syntax highlighting </div>
                 <div class="panel-body">
                     <p>
@@ -721,6 +743,113 @@
             res += e + "  \n";
 
         });
+
+        // Show result into textarea   */
+        updateResult(res, '#dst');
+
+        // Clear textarea after several seconds to get prepared with next user input
+        resetTextArea();
+
+    }
+
+    // make markdown table from tabbed text
+    function markdown_table() {
+
+        /* Get strings from Text area and clean them */
+        var str = getStrForMarkdown();
+
+        /* res for the last ourput */
+        var res = '';
+        var columns = 2; // number of columns, default added beginning and end of the line
+
+        // 記号付きの行を見出しにする
+        // Operate on each line
+        $.each(str.split('\n'), function(i, e) {
+            // console.log(i);
+            // console.log(e);
+
+            // Get columns in the first row to make the header later
+            if (i == 0) {
+                tabs_count = (e.match(/\t/g) || []).length;
+                console.log("tabs_count=" + tabs_count);
+                if (tabs_count >= 1) {
+                    columns = tabs_count + 1;
+                } else {
+                    return;
+                }
+            }
+
+            // Replace columns to pipe
+            e = e.replace(/\t/g, "  |  ");
+            // console.log("e=" + e);
+
+            res += "| " + e + " | \n";
+
+        });
+
+        // Add hearder and second row of the table
+        var header = "";
+        var second = "";
+        var i = 1;                // Wanna count 0 to upper for column names
+        while ( i <= columns ) {
+            header += "| " + i + "  " ; // TODO: Add header column names
+            second += "|--- "; // TODO: Add header column names
+            i += 1;
+        }
+        // Add the pipe on end of the line
+        header += " |";
+        second += " |";
+
+        // Combine all
+        res = header + "\n" + second + "\n" + res;
+
+        // Show result into textarea   */
+        updateResult(res, '#dst');
+
+        // Clear textarea after several seconds to get prepared with next user input
+        resetTextArea();
+
+    }
+
+    // make plain text from markdwon table
+    function markdown_table_to_text() {
+
+        /* Get strings from Text area and clean them */
+        var str = getStrForMarkdown();
+
+        /* res for the last ourput */
+        var res = '';
+
+        // 記号付きの行を見出しにする
+        // Operate on each line
+        $.each(str.split('\n'), function(i, e) {
+            // console.log(i);
+            // console.log(e);
+
+            // Remove second row
+            e = e.replace(/\|---.*/g, "");
+            // Remove first and last pipes in each line
+            e = e.replace(/^\|/, "");
+            e = e.replace(/\|\s$/, "");
+
+            // console.log(e);
+
+            // trim each cell
+            // Remove pipe and change to tab
+            row = "";
+            $.each(e.split('|'), function(ii, ee) {
+                console.log(ee);
+                // Remove pipe and trim
+                row +=  ee.replace(/\|/, "").trim();
+                row += "\t"; // Add tab (This means pipe replaced to tab)
+            });
+            // console.log(row);
+
+            res += row.trim() + "\n";
+        });
+
+        // Remove Second row
+        res = res.replace(/\n\s*?\n/g, "\n");
 
         // Show result into textarea   */
         updateResult(res, '#dst');

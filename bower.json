@@ -1,0 +1,19 @@
+{
+  "name": "online_markdown_converter",
+  "version": "0.0.0",
+  "homepage": "https://github.com/kujiy/online_markdown_converter",
+  "authors": [
+    "kujiy"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "moment": "momentjs#~2.13.0"
+  }
+}

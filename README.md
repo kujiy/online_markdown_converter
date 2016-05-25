@@ -19,8 +19,14 @@ If you don't need auto reset textarea, click the `off` button on the right top p
 - Embolden or italicize one-byte strings automaticaly
 - Convert typical symbols(e.g. ■□○●・) to markdown symbols
 
-## Related
+### How to push to heroku
 Thanks [dzuelke/heroku-multipack-nodejs-php-example](https://github.com/dzuelke/heroku-multipack-nodejs-php-example) for deploying on heroku php app with bower.
+```
+$ heroku create your-app-name
+$ heroku buildpacks:add heroku/nodejs 
+$ heroku buildpacks:add heroku/php
+$ git push heroku master
+```
 
 ## Welcome
 I made this tool only for Gitlab. Feel free to ask anything.

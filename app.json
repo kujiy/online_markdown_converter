@@ -1,0 +1,22 @@
+{
+    "name": "online_markdown_converter",
+    "description": "Convert your text to markdownized text",
+    "keywords": [
+        "markdown",
+        "table",
+        "text",
+        "csv",
+        "tab"
+    ],
+    "website": "https://online-markdown-converter.herokuapp.com/",
+    "repository": "https://github.com/kujiy/online_markdown_converter",
+    "success_url": "/",
+    "buildpacks": [
+        {
+            "url": "heroku/nodejs"
+        },
+        {
+            "url": "heroku/php"
+        }
+    ]
+}

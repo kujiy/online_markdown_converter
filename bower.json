@@ -15,6 +15,7 @@
   ],
   "dependencies": {
     "bootstrap": "~3.3.6",
+    "js-cookie": "~2.1.1",
     "moment": "momentjs#~2.13.0"
   }
 }

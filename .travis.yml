@@ -3,4 +3,4 @@ language: php
 php:
   - nightly
 
-script: phpunit --coverage-text
+script: phpunit --debug web/travis-test.php

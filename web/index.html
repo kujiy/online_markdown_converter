@@ -760,13 +760,17 @@
         /* Get strings from Text area and clean them */
         var str = getStrForMarkdown();
 
+        // replace inner line break to <br> tag
+        // console.log( str.replace(/\r\n/g, "ZZZZ") ); can't detect line break in a cell
+
+
         /* res for the last ourput */
         var res = '';
         var columns = 2; // number of columns, default added beginning and end of the line
 
         // 記号付きの行を見出しにする
         // Operate on each line
-        $.each(str.split('\n'), function(i, e) {
+        $.each(str.split('\r\n'), function(i, e) {
             // console.log(i);
             // console.log(e);
 

@@ -305,6 +305,7 @@
                     <p>
                         <button class="btn btn-default" onclick="createALink()">Make &lt;A> link tag</button>
                         <button class="btn btn-default" onclick="remove_htmltags()">Remove HTML tags</button>
+                        <button class="btn btn-default" onclick="remove_tag('span')">Remove &lt;span&gt; tags</button>
                     </p>
                 </div>
                 <div class="panel-heading">Converting logs </div>
@@ -760,13 +761,17 @@
         /* Get strings from Text area and clean them */
         var str = getStrForMarkdown();
 
+        // replace inner line break to <br> tag
+        // console.log( str.replace(/\r\n/g, "ZZZZ") ); can't detect line break in a cell
+
+
         /* res for the last ourput */
         var res = '';
         var columns = 2; // number of columns, default added beginning and end of the line
 
         // 記号付きの行を見出しにする
         // Operate on each line
-        $.each(str.split('\n'), function(i, e) {
+        $.each(str.split('\r\n'), function(i, e) {
             // console.log(i);
             // console.log(e);
 
@@ -1290,6 +1295,21 @@
         delete04 = delete02.replace(delete03, ">\n$1\n<");
         rgexp = new RegExp(/<("[^"]*"|'[^']*'|[^'">])*>/g);
         convertedtext = delete04.replace(rgexp, "");
+
+        /* 変換終了 textareaへ結果を表示する 引数（結果文字列、出力するtextarea名)   */
+        updateResult(convertedtext, "#dst");
+        // Clear textarea after several seconds to get prepared with next user input
+        resetTextArea();
+    }
+
+
+
+    function remove_tag(tag) {
+
+        /* Get strings from Text area & Delete line breaks at the beginning and end of each line   */
+        var str = getText('#src');
+        rgexp = new RegExp("/<" + tag + ".*?>/g");
+        convertedtext = str.replace(rgexp, "");
 
         /* 変換終了 textareaへ結果を表示する 引数（結果文字列、出力するtextarea名)   */
         updateResult(convertedtext, "#dst");

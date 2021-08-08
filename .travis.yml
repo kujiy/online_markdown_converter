@@ -1,0 +1,6 @@
+language: php
+
+php:
+  - nightly
+
+script: phpunit --debug web/travis-test.php

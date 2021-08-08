@@ -1,4 +1,5 @@
 {
+   "stack": "heroku-20",
     "name": "online_markdown_converter",
     "description": "Convert your text to markdownized text",
     "keywords": [
